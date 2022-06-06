@@ -1,0 +1,237 @@
+:root {
+    --white: #fffbfb;
+    --grey: #f0eef1;
+    --black: #050505;
+    --border-radius: 8px;
+    --spacing-xs: 5px;
+    --spacing-sm: 10px;
+    --spacing-md: 15px;
+    --spacing-lg: 20px;
+    --spacing-xl: 40px;
+    --shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  }
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+  
+html {
+  height: 100%;
+}
+
+
+body {
+  min-height: 100%;
+  background-color: var(--grey);
+  color: var(--black);
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  word-wrap: break-word;
+}
+
+
+.container {
+  margin: 0 auto;
+  width: 100%;
+  min-height: 100%;
+  display: grid;
+  grid-template-areas:
+      ' header header '
+      'main panel';
+  grid-template-rows: 100px 1fr;
+  grid-template-columns: 1fr 360px;
+}
+
+svg {
+  height: 1.5em;
+  transition: var(--fast-transition);
+  width: 1.5em;
+}
+
+/* button */
+
+button,
+input {
+  border: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  cursor: pointer;
+  outline: none;
+}
+
+  
+.btn {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--border-radius);
+  transition: filter 0.15s ease-in-out;
+}
+  
+.btn:hover {
+  filter: brightness(90%);
+}
+  
+.add-btn {
+  font-size: 24px;
+  font-weight: 600;
+}
+  
+.btn-light-green {
+  background-color: var(--light-green);
+}
+  
+.btn-light-red {
+  background-color: var(--light-red);
+}
+  
+/* HEADER */
+  
+header {
+  background-color: var(--white);
+  box-shadow: var(--shadow);
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  grid-area: header;
+}
+
+.title {
+  font-size: 42px;
+  font-weight: bold;
+  margin-left: 20px !important;
+}
+  
+  .header .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .logged-in,
+  .logged-out {
+    display: none;
+  }
+  
+  .logged-in.active,
+  .logged-out.active {
+    display: flex;
+    gap: 20px;
+  }
+
+
+/* user */
+.user {
+  margin-right: 20px;
+  width: 360px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.user .user-name {
+  font-size: 20px;
+  margin-right: 20px;
+}
+.user .user-photo {
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  margin-right: 20px;
+}
+.user .button {
+  border: 0;
+  font-size: 16px;
+  width: 100px;
+  height: 40px;
+}
+.user .button:hover,
+.user .button:focus {
+  background-color: rgb(100, 23, 0);
+}
+  
+  /* MAIN */
+  
+main {
+  text-align: center;
+  margin: 40px 40px;
+  grid-area: main;
+  display: grid;
+  justify-content: space-around;
+  justify-items: center;
+  grid-template-columns: repeat(4, 1fr);
+  grid-row-gap: 40px;
+  grid-auto-flow: row;
+}
+
+/* panel */
+
+.panel {
+  margin: 30px;
+  overflow: auto;
+  padding-top: 40px;
+  grid-area: panel;
+  width: 360px;
+  background-color: rgba(246, 246, 246, 0.8);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  top: 100px;
+  z-index: 10;
+}
+
+.panel .element {
+  width: 80%;
+  border-top: 2px solid rgba(0, 0, 0, 0.4);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.4);
+}
+.panel .element .title {
+  font-size: 26px;
+  text-align: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+}
+.panel .element .data {
+  margin: 1rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+}
+.panel .element .data .info {
+  margin: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* footer */
+
+footer {
+  width: 60%;
+  font-size: 0.95rem;
+  padding: 0.5rem;
+  margin-bottom: 1.3rem;
+  text-align: center;
+}
+
+
+.fa-github {
+  color: var(--black);
+  font-size: 0.95rem;
+  transition: transform 0.3s ease-in-out;
+}
+
+.fa-github:hover {
+  transform: rotate(360deg) scale(1.8);
+}

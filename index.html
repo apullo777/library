@@ -6,27 +6,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Library</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://use.fontawesome.com/3ae9040299.js"></script>
 </head>
 <body>
-    <header class="header">
-        <div class="menu">
-            <div class="bar"></div>
-            <div class="bar"></div>
-            <div class="bar"></div>
+    <div class="container">
+        <header class="header">
+            <div class="menu">
+                <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" />
+                </svg>
+            </div>
+            <h1 class="title">Library</h1>
+
+            <div class="user">
+                <img src="" alt="userPhoto" class="user-photo display-none">
+                <h3 class="user-name"></h3>
+                <button class="btn sign-in">Sign in</button>
+            </div>
+        </header>
+
+        <main class="main-container">
+            <button class="add-btn" id="addBtn">+</button>
+        </main>
+
+        <div class="panel">
+            <div class="element">
+                <h2 class="title">Information</h2>
+                <div class="data">
+                    <div class="info">
+                        <h3>Books</h3>
+                        <span id="total-books">0</span>
+                    </div>
+            
+                    <div class="info">
+                        <h3>Completed Books</h3>
+                        <span id="completed-books">0</span>
+                    </div>
+
+                    <div class="info">
+                        <h3>Total Pages</h3>
+                        <span id="total-pages">0</span>
+                    </div>
+            
+                    <div class="info">
+                        <h3>Completed Pages</h3>
+                        <span id="completed-pages">0</span>
+                    </div>
+                </div>
+            </div>
+            <footer class="footer">
+                <p>
+                Copyright © apullo777
+                </p>
+                <a href="https://github.com/apullo777" target="_blank">
+                <i class="fab fa-github"></i>
+                </a>
+            </footer>
         </div>
-        <h1 class="title">Library</h1>
+    </div>
 
-        <nav class="user">
-            <img src="" alt="userPhoto" class="user-photo">
-            <h3 class="user-name"></h3>
-            <button class="btn sign-in">Sign in</button>
-        </nav>
-    </header>
-
-    <main class="main-container">
-        <button class="add-btn" id="addBookBtn">+</button>
-    </main>
-    <footer></footer>
     <script src="script.js"></script>
     <script>
         const firebaseConfig = {
