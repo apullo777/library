@@ -21,12 +21,13 @@
             <div class="user">
                 <img src="" alt="userPhoto" class="user-photo display-none">
                 <h3 class="user-name"></h3>
-                <button class="btn sign-in">Sign in</button>
+                <button class="btn sign-in" id="signIn">Sign in</button>
             </div>
         </header>
 
         <main class="main-container">
             <button class="add-btn" id="addBtn">+</button>
+            <div class="grid" id="grid"></div>
         </main>
 
         <div class="panel">
@@ -63,7 +64,27 @@
                 </a>
             </footer>
         </div>
+
+        <div class="modal" id="appendModal">
+            <form class="append-form" id="appendForm">
+                <h3>Append new book</h3>
+                <input class="input" type="text" id="title" placeholder="Title" required maxlength="100"/>
+                <p class="error-msg" id="errorMsg"></p>
+                <input class="input" type="text" id="author" placeholder="Author" required maxlength="100"/>
+                <input class="input" type="number" id="totalPages" placeholder="Toral Pages" required max="10000"/>
+                <input class="input" type="number" id="completedPages" placeholder="Completed Pages" required max="10000"/>
+                <div class="completed">
+                    <label for="completed">Have you read it?</label>
+                    <input class="checkbox" type="checkbox" id="completed"/>
+                </div>
+                <button class="btn btn-light-green" type="submit">Submit</button>
+            </form>
+        </div>
     </div>
+
+    <div class="modal" id="accountModal"></div>
+    <div class="overlay" id="overlay"></div>
+
 
     <script src="script.js"></script>
     <script>
@@ -77,5 +98,9 @@
             measurementId: "G-K06QW1TJWJ"
         };
     </script>
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-firestore.js"></script>
+
 </body>
 </html>
