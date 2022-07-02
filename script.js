@@ -7,7 +7,6 @@ class Book {
       completedPages = 0,
       completed = false
     ) {
-      this.id = ++uniqueId;
       this.title = title;
       this.author = author;
       this.totalPages = totalPages;
@@ -50,7 +49,10 @@ const errorMsg = document.getElementById('errorMsg')
 const overlay = document.getElementById('overlay')
 const appendForm = document.getElementById('appendForm')
 const booksGrid = document.getElementById('grid')
-
+const loggedIn = document.getElementById('loggedIn')
+const loggedOut = document.getElementById('loggedOut')
+const loadingRing = document.getElementById('loadingRing')
+const signInBtn = document.getElementById('signIn')
 
 /* Modals */
   
@@ -87,6 +89,65 @@ const handleKeyboardInput = (e) => {
 }
 
 
+/* Account
+
+let uiConfig = {
+  callbacks: {
+    signInSuccessWithAuthResult: function(authResult, redirectUrl) {
+      document.getElementById('accountModal').style.display = 'none';
+      return false;
+    }
+  },
+
+  signInFlow: 'popup',
+  signInOptions: [
+    firebase.auth.GoogleAuthProvider.PROVIDER_ID
+  ],
+  tosUrl: ':3',
+  privacyPolicyUrl: function() {
+    window.location.assign(':3');
+  }
+};
+
+const changeButtonToSingIn = () => {
+  signInBtn.textContent = 'Sign in';
+  signInBtn.removeEventListener('click', singOutHandler);
+  signInBtn.addEventListener('click', singInHandler);
+};
+
+const changeButtonToSingOut = () => {
+  // change state of button
+  signInBtn.textContent = 'Sign Out';
+  signInBtn.removeEventListener('click', singInHandler);
+  signInBtn.addEventListener('click', singOutHandler);
+};
+
+const singInHandler = () => {
+  const accountModal = document.getElementById('accountModal');
+  accountModal.style.display = '';
+
+  uiConfig.callbacks.signInSuccessWithAuthResult = function(
+    authResult,
+    redUrl
+  ) {
+    isLocal = false;
+    accountModal.style.display = 'none';
+    return false;
+  };
+  ui.start('#firebaseui-auth-container', uiConfig);
+};
+
+const singOutHandler = () => {
+  clearLibrary(myLibrary);
+  isLocal = true;
+  document.accountModal('.user .user-photo').classList.add('display-none');
+  document.querySelector('.user .user-name').textContent = '';
+  firebase.auth().signOut();
+};
+
+*/
+
+
 /* Book Entries */
 
 const updateGrid = () => {
@@ -114,8 +175,8 @@ const createBookEntry = (book) => {
     btnContainer.classList.add('button-container')
     readBtn.classList.add('btn')
     deleteBtn.classList.add('btn')
-    readBtn.onclick = toggleRead
-    deleteBtn.onclick = removeBook
+    readBtn.onclick = toggleCompleted
+    deleteBtn.onclick = deleteBook
   
     title.textContent = `"${book.title}"`
     author.textContent = book.author
@@ -161,13 +222,12 @@ const appendBook = (e) => {
       return
     }
   
-    if (auth.currentUser) {
-      addBookDB(newBook)
-    } else {
-      library.addBook(newBook)
+   /* if (auth.currentUser) {
+      appendBookDB(newBook)
+    } else { */
+      library.appendBook(newBook)
       saveLocal()
       updateGrid()
-    }
   
     endAppendModal()
 }
@@ -178,13 +238,13 @@ const deleteBook = (e) => {
       ''
     )
   
-    if (auth.currentUser) {
+    /* if (auth.currentUser) {
       deleteBookDB(title)
-    } else {
+    } else {*/
       library.deleteBook(title)
       saveLocal()
       updateGrid()
-    }
+    /*}*/
 }
   
 const toggleCompleted = (e) => {
@@ -202,6 +262,13 @@ const toggleCompleted = (e) => {
       updateGrid()
     }
 }
+
+accountBtn.onclick = startAccountModal
+addBtn.onclick = startAppendModal
+overlay.onclick = endAppendModal
+appendForm.onsubmit = appendBook
+window.onkeydown = handleKeyboardInput
+
 
 /* Local Storage */
 
@@ -249,8 +316,7 @@ const bookToDoc = (book) => {
 }
 
 
-
-/* Auth */
+/* Auth 
 
 const auth = firebase.auth()
 
@@ -263,7 +329,6 @@ auth.onAuthStateChanged(async (user) => {
     updateGrid()
   }
   startAccountModal(user)
-  startNavbar(user)
 })
 
 const signIn = () => {
@@ -274,4 +339,50 @@ const signIn = () => {
 const signOut = () => {
   auth.signOut()
 }
+
+*/
+
+/* Firestore 
+
+const db = firebase.firestore()
+let unsubscribe
+
+const setupRealTimeListener = () => {
+  unsubscribe = db
+    .collection('books')
+    .where('ownerId', '==', auth.currentUser.uid)
+    .orderBy('createdAt')
+    .onSnapshot((snapshot) => {
+      library.books = docsToBooks(snapshot.docs)
+      updateBooksGrid()
+    })
+}
+
+const appendBookDB = (newBook) => {
+  db.collection('books').add(bookToDoc(newBook))
+}
+
+const deleteBookDB = async (title) => {
+  db.collection('books')
+    .doc(await getBookIdDB(title))
+    .delete()
+}
+
+const toggleCompletedDB = async (book) => {
+  db.collection('books')
+    .doc(await getBookIdDB(book.title))
+    .update({ completed: !book.completed })
+}
+
+const getBookIdDB = async (title) => {
+  const snapshot = await db
+    .collection('books')
+    .where('ownerId', '==', auth.currentUser.uid)
+    .where('title', '==', title)
+    .get()
+  const bookId = snapshot.docs.map((doc) => doc.id).join('')
+  return bookId
+}
+*/
+
 
