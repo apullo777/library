@@ -165,8 +165,7 @@ const createBookEntry = (book) => {
     const bookEntry = document.createElement('div')
     const title = document.createElement('p')
     const author = document.createElement('p')
-    const totalPages = document.createElement('p')
-    const completedPages = document.createElement('p')
+    const pages = document.createElement('p')
     const btnContainer = document.createElement('div')
     const readBtn = document.createElement('button')
     const deleteBtn = document.createElement('button')
@@ -179,23 +178,21 @@ const createBookEntry = (book) => {
     deleteBtn.onclick = deleteBook
   
     title.textContent = `"${book.title}"`
-    author.textContent = book.author
-    totalPages.textContent = `${book.totalPages} pages`
-    completedPages.textContent = `${book.completedPages} pages`
+    author.textContent = `by ${book.author}`
+    pages.textContent = `completed ${book.completedPages}/${book.totalPages} pages`
     deleteBtn.textContent = 'Delete'
   
     if (book.completed) {
       readBtn.textContent = 'Completed'
-      readBtn.classList.add('btn-light-green')
+      readBtn.classList.add('btn-green')
     } else {
       readBtn.textContent = 'Not completed'
-      readBtn.classList.add('btn-light-red')
+      readBtn.classList.add('btn-red')
     }
   
     bookEntry.appendChild(title)
     bookEntry.appendChild(author)
-    bookEntry.appendChild(totalPages)
-    bookEntry.appendChild(completedPages)
+    bookEntry.appendChild(pages)
     btnContainer.appendChild(readBtn)
     btnContainer.appendChild(deleteBtn)
     bookEntry.appendChild(btnContainer)
@@ -228,6 +225,7 @@ const appendBook = (e) => {
       library.appendBook(newBook)
       saveLocal()
       updateGrid()
+      updateInformation()
   
     endAppendModal()
 }
@@ -244,6 +242,7 @@ const deleteBook = (e) => {
       library.deleteBook(title)
       saveLocal()
       updateGrid()
+      updateInformation()
     /*}*/
 }
   
@@ -254,13 +253,14 @@ const toggleCompleted = (e) => {
     )
     const book = library.retrieveBook(title)
   
-    if (auth.currentUser) {
+    /*if (auth.currentUser) {
       toggleCompleteddDB(book)
-    } else {
+    } else {*/
       book.completed = !book.completed
       saveLocal()
       updateGrid()
-    }
+      updateInformation()
+    /*}*/
 }
 
 accountBtn.onclick = startAccountModal
@@ -268,6 +268,37 @@ addBtn.onclick = startAppendModal
 overlay.onclick = endAppendModal
 appendForm.onsubmit = appendBook
 window.onkeydown = handleKeyboardInput
+
+/* Panel Information */
+
+const totalBooksInfo = document.getElementById('total-books')
+const totalPagesInfo = document.getElementById('total-pages')
+const completedBooksInfo = document.getElementById('completed-books')
+const completedPagesInfo = document.getElementById('completed-pages')
+
+const  updateInformation = () => {
+  totalBooksInfo.textContent = library.books.length;
+
+  if (library.books.length == 0) {
+    completedBooksInfo.textContent = '0';
+    totalPagesInfo.textContent = '0';
+    completedPagesInfo.textContent = '0';
+  } else {
+    let completedBooks = 0;
+    library.books.forEach((book) => {
+      if (book.completed) completedBooks++;
+    });
+    completedBooksInfo.textContent = completedBooks;
+
+    let totalPages = 0;
+    library.books.forEach((book) => (totalPages += parseInt(book.totalPages)));
+    totalPagesInfo.textContent = totalPages;
+
+    let completedPages = 0;
+    library.books.forEach((book) => (completedPages += parseInt(book.completedPages)));
+    completedPagesInfo.textContent = completedPages;
+  }
+}
 
 
 /* Local Storage */
